@@ -1,31 +1,20 @@
 using UnityEngine;
 
-public class ResourceVein : MonoBehaviour
+public class ResourceVein : ResourceStorage, IExtractable
 {
-    [SerializeField] private int maxCapacity;
-    private int currentCapacity;
-
     private void Start()
     {
         currentCapacity = maxCapacity;
     }
 
-    public int TakeResource(int count = 1)
+    public void Extract(int count = 1)
     {
-        if(currentCapacity - count > 0)
-        {
-            currentCapacity -= count;
-            return count;
-        }
-
-        int buf = currentCapacity;
-        OnDepletion();
-        return buf;
+        base.TakeResource(count);
     }
 
-    private void OnDepletion()
+    protected override void OnDepletion()
     {
-        currentCapacity = 0;
+        base.OnDepletion();
         enabled = false;
     }
 }
