@@ -15,6 +15,6 @@ public class ResourceVein : ResourceStorage, IExtractable
     protected override void OnDepletion()
     {
         base.OnDepletion();
-        enabled = false;
+        this.gameObject.SetActive(false);
     }
 }
