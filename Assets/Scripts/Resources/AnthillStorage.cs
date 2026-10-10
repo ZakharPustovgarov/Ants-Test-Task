@@ -7,9 +7,9 @@ public class AnthillStorage : ResourceStorage, IInsertable, IExtractable
         currentCapacity = 0;
     }
 
-    public void Extract(int count = 1)
+    public int Extract(int count = 1)
     {
-        base.TakeResource(count);
+        return base.TakeResource(count);
     }
 
     public void Insert(int count)

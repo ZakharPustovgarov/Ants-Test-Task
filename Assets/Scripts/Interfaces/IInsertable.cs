@@ -1,4 +1,4 @@
-interface IInsertable
+public interface IInsertable
 {
     public void Insert(int count);
 }

@@ -7,9 +7,9 @@ public class ResourceVein : ResourceStorage, IExtractable
         currentCapacity = maxCapacity;
     }
 
-    public void Extract(int count = 1)
+    public int Extract(int count = 1)
     {
-        base.TakeResource(count);
+        return base.TakeResource(count);
     }
 
     protected override void OnDepletion()
