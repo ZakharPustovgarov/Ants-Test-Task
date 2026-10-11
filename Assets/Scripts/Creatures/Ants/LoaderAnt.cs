@@ -15,6 +15,7 @@ public class LoaderAnt : Ant
     private Coroutine gatherCoroutine;
 
     public Action<GameObject> OnObjectDetected;
+    public Action OnResourceGathered;
 
     protected override void Start()
     {
@@ -42,6 +43,7 @@ public class LoaderAnt : Ant
         loadedResourceCount = extractable.Extract(gatheredResourceLimit);
         gatheredResource.SetActive(true);
         animController.StopActing();
+        OnResourceGathered?.Invoke();
     }
 
     private void OnTriggerEnter2D(Collider2D col)
