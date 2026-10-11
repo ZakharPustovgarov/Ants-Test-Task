@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-internal interface IMovable
+public interface IMovable
 {
     public bool MoveTowards(Vector3 destination, float stoppingDistance);
 }

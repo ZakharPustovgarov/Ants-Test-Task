@@ -8,7 +8,7 @@ public class SearchResourceState : UnitState
     private LoaderAnt loaderAnt;
     private Vector3 movePosition;
 
-    public Action<ResourceVein> OnResourceFoundEvent;
+    public Action<Creature, ResourceVein> OnResourceFoundEvent;
 
     public SearchResourceState(ResourceVein desirableVein, float desirableWayChance = 0.7f)
     {
@@ -83,6 +83,6 @@ public class SearchResourceState : UnitState
 
         if (vein == null) return;
 
-        OnResourceFoundEvent?.Invoke(vein);
+        OnResourceFoundEvent?.Invoke(loaderAnt, vein);
     }
 }

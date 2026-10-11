@@ -1,0 +1,229 @@
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public class LoaderSubmind : Submind
+{
+    [SerializeField] private AnthillStorage anthillStorage; 
+
+    private List<LoaderAnt> unauthorizedLoaders = new List<LoaderAnt>();
+    private Dictionary<LoaderAnt, LoaderInfo> loadersState = new Dictionary<LoaderAnt, LoaderInfo>();
+
+    private List<ResourceVein> hiddenVeins = new List<ResourceVein>();
+    private List<ResourceVein> foundVeins = new List<ResourceVein>();
+    private List<ResourceVein> depletedVeins = new List<ResourceVein>();
+
+    public override void Initialize()
+    {
+        unauthorizedLoaders = FindObjectsByType<LoaderAnt>(FindObjectsSortMode.None).ToList();
+        hiddenVeins = FindObjectsByType<ResourceVein>(FindObjectsSortMode.None).ToList();
+        PutUnauthorizedToIdle();
+    }
+
+    public override void Execute()
+    {       
+        foreach (var loader in loadersState.Keys)
+        {
+            LoaderInfo info;
+            loadersState.TryGetValue(loader, out info);
+            
+            if(info == null) loadersState.Add(loader, new LoaderInfo(LoaderState.IDLE));
+
+            if(info.state != LoaderState.IDLE)
+            {
+                info.unitState.Execute();
+                continue;
+            }
+
+            PutIdleToWork(loader, info);
+        }
+    }
+
+    private void PutUnauthorizedToIdle()
+    {
+        foreach (var loader in unauthorizedLoaders)
+        {
+            loadersState.Add(loader, new LoaderInfo(LoaderState.IDLE));
+        }
+
+        unauthorizedLoaders.Clear();
+    }
+
+    private void PutIdleToWork(LoaderAnt loader, LoaderInfo info)
+    {
+        ResourceVein desirableVein = TryGetHiddenVein();
+
+        if (desirableVein != null)
+        {
+            AssignSearch(loader, info, desirableVein);
+            return;
+        }
+
+        if (foundVeins.Count == 0)
+        {
+            loadersState.Remove(loader);
+        }
+
+        AssignMoveToGather(loader, info);
+    }
+
+    private ResourceVein TryGetHiddenVein()
+    {
+        if (hiddenVeins.Count == 0) return null;
+
+        int allVeins = hiddenVeins.Count + foundVeins.Count + depletedVeins.Count;
+        int notHiddenVeins = allVeins - hiddenVeins.Count;
+        int chooseWeight = notHiddenVeins == 1 ? 0 : notHiddenVeins / allVeins;
+
+        if(Random.value < chooseWeight)
+        {
+            return null;
+        }
+
+        return MathUtility.GetRandomElement(hiddenVeins);
+    }
+
+    private void AssignSearch(LoaderAnt loader, LoaderInfo info, ResourceVein vein)
+    {
+        SearchResourceState searchState = new SearchResourceState(vein);
+        loader.ChangeState(searchState);
+        info.unitState = searchState;
+        info.state = LoaderState.SEARCH;
+
+        searchState.OnResourceFoundEvent += OnResourceFound;
+    }
+
+    private void OnResourceFound(Creature unit, ResourceVein vein)
+    {
+        LoaderInfo info;
+        LoaderAnt loader = unit as LoaderAnt;
+        loadersState.TryGetValue(loader, out info);
+
+        (info.unitState as SearchResourceState).OnResourceFoundEvent -= OnResourceFound;
+
+        AssignMoveToGather(loader, info, vein);
+    }
+
+    private void AssignMoveToGather(LoaderAnt loader, LoaderInfo info, ResourceVein vein = null)
+    {
+        ResourceVein targetVein = vein == null ? MathUtility.GetRandomElement(foundVeins) : vein;
+
+        MoveToPositionState moveState = new MoveToPositionState(targetVein.gameObject.transform.position, 0.5f);
+        loader.ChangeState(moveState);
+        info.unitState = moveState;
+        info.assignedVein = vein;
+        info.state = LoaderState.MOVE_TO_RESOURCE;
+
+        moveState.OnTargetReachedEvent += OnResourceReached;
+    }
+
+    private void OnResourceReached(IMovable unit)
+    {
+        LoaderInfo info;
+        LoaderAnt loader = unit as LoaderAnt;
+        loadersState.TryGetValue(loader, out info);
+
+        (info.unitState as MoveToPositionState).OnTargetReachedEvent -= OnResourceReached;
+
+        AssignGather(loader, info, info.assignedVein);
+    }
+
+    private void AssignGather(LoaderAnt loader, LoaderInfo info, ResourceVein vein)
+    {
+        GatherResourceState gatherState = new GatherResourceState(vein);
+        loader.ChangeState(gatherState);
+        info.unitState = gatherState;
+        info.state = LoaderState.GATHER;
+
+        gatherState.OnResourceGatheredEvent += OnResourceGathered;
+    }
+
+    private void OnResourceGathered(Creature unit)
+    {
+        LoaderInfo info;
+        LoaderAnt loader = unit as LoaderAnt;
+        loadersState.TryGetValue(loader, out info);
+
+        (info.unitState as GatherResourceState).OnResourceGatheredEvent -= OnResourceGathered;
+
+        AssignMoveToAnthill(loader, info);
+    }
+
+    private void AssignMoveToAnthill(LoaderAnt loader, LoaderInfo info)
+    {
+        MoveToPositionState moveState = new MoveToPositionState(anthillStorage.transform.position);
+        loader.ChangeState(moveState);
+        info.unitState = moveState;
+        info.state = LoaderState.MOVE_TO_ANTHILL;
+
+        moveState.OnTargetReachedEvent += OnAnthillReached;
+    }
+
+    private void OnAnthillReached(IMovable unit)
+    {
+        LoaderInfo info;
+        LoaderAnt loader = unit as LoaderAnt;
+        loadersState.TryGetValue(loader, out info);
+
+        (info.unitState as MoveToPositionState).OnTargetReachedEvent -= OnAnthillReached;
+
+        AssignUnload(loader, info);
+    }
+
+    private void AssignUnload(LoaderAnt loader, LoaderInfo info)
+    {
+        UnloadResourceState unloadState = new UnloadResourceState(anthillStorage);
+        loader.ChangeState(unloadState);
+        info.unitState = unloadState;
+        info.state = LoaderState.UNLOAD;
+
+        unloadState.OnResourceUnloadedEvent += OnUnloaded;
+    }
+
+    private void OnUnloaded(Creature unit)
+    {
+        LoaderInfo info;
+        LoaderAnt loader = unit as LoaderAnt;
+        loadersState.TryGetValue(loader, out info);
+
+        (info.unitState as UnloadResourceState).OnResourceUnloadedEvent -= OnUnloaded;
+
+        info.state = LoaderState.IDLE;
+        info.unitState = new IdleState();
+        info.assignedVein = null;
+    }
+
+    private void OnVeinDepleted(ResourceVein vein)
+    {
+        foundVeins.Remove(vein);
+        depletedVeins.Add(vein);
+    }
+
+    private void OnVeinFound(ResourceVein vein)
+    {
+        hiddenVeins.Remove(vein);
+        foundVeins.Add(vein);
+    }
+
+    private enum LoaderState
+    {
+        IDLE,
+        SEARCH,
+        MOVE_TO_RESOURCE,
+        GATHER,
+        MOVE_TO_ANTHILL,
+        UNLOAD
+    }
+
+    private class LoaderInfo
+    {
+        public LoaderInfo(LoaderState state)
+        {
+            this.state = state;
+        }
+
+        public LoaderState state;
+        public UnitState unitState;
+        public ResourceVein assignedVein;
+    }
+}

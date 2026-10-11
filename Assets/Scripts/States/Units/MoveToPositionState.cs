@@ -1,13 +1,13 @@
-
 using System;
 using UnityEngine;
 
 public class MoveToPositionState : UnitState
 {
-    public Action OnTargetReachedEvent;
     private Vector3 destination;
     private float stoppingDistance;
     private IMovable movableUnit;
+
+    public Action<IMovable> OnTargetReachedEvent;
 
     public MoveToPositionState(Vector3 pos, float stoppingDistance = 0)
     {
@@ -24,7 +24,7 @@ public class MoveToPositionState : UnitState
     public override void Execute()
     {
         if (movableUnit.MoveTowards(destination, stoppingDistance))
-            OnTargetReachedEvent?.Invoke();
+            OnTargetReachedEvent?.Invoke(movableUnit);
     }
 
     public override void Exit()

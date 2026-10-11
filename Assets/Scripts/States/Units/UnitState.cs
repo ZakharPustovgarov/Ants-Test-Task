@@ -1,5 +1,3 @@
-using System;
-
 public abstract class UnitState
 {
     protected Creature assignedUnit;

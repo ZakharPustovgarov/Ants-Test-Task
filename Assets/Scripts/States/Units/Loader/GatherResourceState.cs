@@ -5,7 +5,7 @@ public class GatherResourceState : UnitState
     private ResourceVein vein;
     private LoaderAnt loaderAnt;
 
-    public Action OnResourceGatheredEvent;
+    public Action<Creature> OnResourceGatheredEvent;
 
     public GatherResourceState(ResourceVein vein)
     {
@@ -34,6 +34,6 @@ public class GatherResourceState : UnitState
 
     private void OnResourceGathered()
     {
-        OnResourceGatheredEvent?.Invoke();
+        OnResourceGatheredEvent?.Invoke(loaderAnt);
     }
 }

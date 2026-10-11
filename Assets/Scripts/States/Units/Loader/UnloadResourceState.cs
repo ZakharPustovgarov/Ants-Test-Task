@@ -6,7 +6,7 @@ public class UnloadResourceState : UnitState
     private IInsertable storage;
     private LoaderAnt loaderAnt;
 
-    public Action OnResourceUnloadedEvent;
+    public Action<Creature> OnResourceUnloadedEvent;
 
     public UnloadResourceState(IInsertable storage)
     {
@@ -35,6 +35,6 @@ public class UnloadResourceState : UnitState
 
     private void OnResourceUnloaded()
     {
-        OnResourceUnloadedEvent?.Invoke();
+        OnResourceUnloadedEvent?.Invoke(loaderAnt);
     }
 }
