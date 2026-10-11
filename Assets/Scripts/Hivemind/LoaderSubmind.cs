@@ -127,6 +127,7 @@ public class LoaderSubmind : Submind
         info.unitState = moveState;
         info.assignedVein = targetVein;
         info.state = LoaderState.MOVE_TO_RESOURCE;
+        loader.StartMovementAnimation();
         //Debug.Log($"{loader.gameObject.name} moving to {targetVein.gameObject.name} to position {targetVein.transform.position}");
 
         moveState.OnTargetReachedEvent += OnResourceReached;
@@ -139,7 +140,7 @@ public class LoaderSubmind : Submind
         loadersState.TryGetValue(loader, out info);
         //Debug.Log($"{loader.gameObject.name} reached {info.assignedVein.gameObject.name}");
         (info.unitState as MoveToPositionState).OnTargetReachedEvent -= OnResourceReached;
-
+        loader.StopMovementAnimation();
         AssignGather(loader, info, info.assignedVein);
     }
 
@@ -172,6 +173,7 @@ public class LoaderSubmind : Submind
         loader.ChangeState(moveState);
         info.unitState = moveState;
         info.state = LoaderState.MOVE_TO_ANTHILL;
+        loader.StartMovementAnimation();
         //Debug.Log($"{loader.gameObject.name} moving to anthill");
         moveState.OnTargetReachedEvent += OnAnthillReached;
     }
@@ -182,6 +184,7 @@ public class LoaderSubmind : Submind
         LoaderAnt loader = unit as LoaderAnt;
         loadersState.TryGetValue(loader, out info);
         //Debug.Log($"{loader.gameObject.name} reached to anthill");
+        loader.StopMovementAnimation();
         (info.unitState as MoveToPositionState).OnTargetReachedEvent -= OnAnthillReached;
 
         AssignUnload(loader, info);
