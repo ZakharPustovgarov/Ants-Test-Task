@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoveToPositionState : UnitState
 {
-    public Action OnTargetReached;
+    public Action OnTargetReachedEvent;
     private Vector3 destination;
     private float stoppingDistance;
     private IMovable movableUnit;
@@ -24,7 +24,7 @@ public class MoveToPositionState : UnitState
     public override void Execute()
     {
         if (movableUnit.MoveTowards(destination, stoppingDistance))
-            OnTargetReached?.Invoke();
+            OnTargetReachedEvent?.Invoke();
     }
 
     public override void Exit()

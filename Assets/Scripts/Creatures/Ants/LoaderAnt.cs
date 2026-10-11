@@ -14,8 +14,8 @@ public class LoaderAnt : Ant
     private int loadedResourceCount = 0;
     private Coroutine gatherCoroutine;
 
-    public Action<GameObject> OnObjectDetected;
-    public Action OnResourceGathered;
+    public Action<GameObject> OnObjectDetectedEvent;
+    public Action OnResourceGatheredEvent;
 
     protected override void Start()
     {
