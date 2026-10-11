@@ -14,6 +14,10 @@ public class LoaderSubmind : Submind
     private List<ResourceVein> foundVeins = new List<ResourceVein>();
     private List<ResourceVein> depletedVeins = new List<ResourceVein>();
 
+    private bool isVeinsDepleted = false;
+    private bool isAllIdle = false;
+    private int idleCount = 0;
+
     public override void Initialize()
     {
         unauthorizedLoaders = FindObjectsByType<LoaderAnt>(FindObjectsSortMode.None).ToList();
@@ -22,7 +26,9 @@ public class LoaderSubmind : Submind
     }
 
     public override void Execute()
-    {       
+    {
+        if (isVeinsDepleted && isAllIdle) return;
+
         foreach (var loader in loadersState.Keys)
         {
             LoaderInfo info;
@@ -62,7 +68,9 @@ public class LoaderSubmind : Submind
 
         if (foundVeins.Count == 0)
         {
-            loadersState.Remove(loader);
+            //loadersState.Remove(loader);
+            isVeinsDepleted = true;
+            if (++idleCount == loadersState.Count) isAllIdle = true;
             return;
         }
 
