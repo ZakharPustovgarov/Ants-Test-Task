@@ -30,8 +30,10 @@ public class LoaderAnt : Ant
 
     public void Unload(IInsertable insertable)
     {
-        insertable.Insert(loadedResourceCount);
-        gatheredResource.SetActive(false);
+        loadedResourceCount -= insertable.Insert(loadedResourceCount);
+
+        if(loadedResourceCount == 0)
+            gatheredResource.SetActive(false);
     }
 
     private IEnumerator GatherDelay(IExtractable extractable)

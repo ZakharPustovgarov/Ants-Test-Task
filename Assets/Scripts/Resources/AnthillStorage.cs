@@ -12,8 +12,8 @@ public class AnthillStorage : ResourceStorage, IInsertable, IExtractable
         return base.TakeResource(count);
     }
 
-    public void Insert(int count)
+    public int Insert(int count)
     {
-        base.DeliverResource(count);
+        return base.DeliverResource(count);
     }
 }

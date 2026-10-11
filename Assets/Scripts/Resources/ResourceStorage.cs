@@ -5,15 +5,16 @@ public abstract class ResourceStorage : MonoBehaviour
     [SerializeField] protected int maxCapacity;
     protected int currentCapacity;
 
-    protected virtual void DeliverResource(int count)
+    protected virtual int DeliverResource(int count)
     {
         if (currentCapacity + count < maxCapacity)
         {
             currentCapacity += count;
-            return;
+            return count;
         }
 
         OnFull();
+        return currentCapacity + count - maxCapacity;
     }
 
     protected virtual int TakeResource(int count = 1)
