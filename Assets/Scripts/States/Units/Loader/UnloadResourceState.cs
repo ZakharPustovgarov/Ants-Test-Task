@@ -20,12 +20,12 @@ public class UnloadResourceState : UnitState
         loaderAnt = ClassUtility.CastOrThrow<LoaderAnt>(unit, "SearchResourceState");
 
         loaderAnt.OnResourceUnloadedEvent += OnResourceUnloaded;
-        loaderAnt.Unload(storage);
+        
     }
 
     public override void Execute()
     {
-
+        loaderAnt.Unload(storage);
     }
 
     public override void Exit()

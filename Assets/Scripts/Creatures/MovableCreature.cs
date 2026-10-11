@@ -12,19 +12,19 @@ public abstract class MovableCreature : Creature, IMovable
 
         if(stoppingDistance == 0)
         {
-            if (currentDistance <= stoppingDistance)
-            {
-                return true;
-            }
-        }
-        else
-        {
-            float distanceSqr = (destination - transform.position).sqrMagnitude;
+            float distanceSqr = directionToTarget.sqrMagnitude;
 
             if (distanceSqr < 0.0001f)
             {
 
                 transform.position = destination;
+                return true;
+            }
+        }
+        else
+        {
+            if (currentDistance <= stoppingDistance)
+            {
                 return true;
             }
         }

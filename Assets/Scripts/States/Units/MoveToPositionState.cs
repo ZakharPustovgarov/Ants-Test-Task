@@ -12,6 +12,7 @@ public class MoveToPositionState : UnitState
     public MoveToPositionState(Vector3 pos, float stoppingDistance = 0)
     {
         this.stoppingDistance = stoppingDistance;
+        destination = pos;
     }
 
     public override void Enter(Creature unit)
