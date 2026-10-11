@@ -68,7 +68,6 @@ public class LoaderSubmind : Submind
 
         if (foundVeins.Count == 0)
         {
-            //loadersState.Remove(loader);
             isVeinsDepleted = true;
             if (++idleCount == loadersState.Count) isAllIdle = true;
             return;
@@ -100,7 +99,7 @@ public class LoaderSubmind : Submind
         info.unitState = searchState;
         info.state = LoaderState.SEARCH;
 
-        Debug.Log($"Assigned search to {loader.gameObject.name}");
+        //Debug.Log($"Assigned search to {loader.gameObject.name}");
 
         searchState.OnResourceFoundEvent += OnResourceFound;
     }
@@ -110,7 +109,7 @@ public class LoaderSubmind : Submind
         LoaderInfo info;
         LoaderAnt loader = unit as LoaderAnt;
         loadersState.TryGetValue(loader, out info);
-        Debug.Log($"{loader.gameObject.name} found {vein.gameObject.name}");
+        //Debug.Log($"{loader.gameObject.name} found {vein.gameObject.name}");
         OnVeinFound(vein);
 
         (info.unitState as SearchResourceState).OnResourceFoundEvent -= OnResourceFound;
@@ -121,13 +120,13 @@ public class LoaderSubmind : Submind
     private void AssignMoveToGather(LoaderAnt loader, LoaderInfo info, ResourceVein vein = null)
     {
         ResourceVein targetVein = vein == null ? MathUtility.GetRandomElement(foundVeins) : vein;
-        Debug.Log($"{targetVein.gameObject.name} is chosen to gather");
+
         MoveToPositionState moveState = new MoveToPositionState(targetVein.gameObject.transform.position, stopDistanceForVeins);
         loader.ChangeState(moveState);
         info.unitState = moveState;
         info.assignedVein = targetVein;
         info.state = LoaderState.MOVE_TO_RESOURCE;
-        Debug.Log($"{loader.gameObject.name} moving to {targetVein.gameObject.name} to position {targetVein.transform.position}");
+        //Debug.Log($"{loader.gameObject.name} moving to {targetVein.gameObject.name} to position {targetVein.transform.position}");
 
         moveState.OnTargetReachedEvent += OnResourceReached;
     }
@@ -137,7 +136,7 @@ public class LoaderSubmind : Submind
         LoaderInfo info;
         LoaderAnt loader = unit as LoaderAnt;
         loadersState.TryGetValue(loader, out info);
-        Debug.Log($"{loader.gameObject.name} reached {info.assignedVein.gameObject.name}");
+        //Debug.Log($"{loader.gameObject.name} reached {info.assignedVein.gameObject.name}");
         (info.unitState as MoveToPositionState).OnTargetReachedEvent -= OnResourceReached;
 
         AssignGather(loader, info, info.assignedVein);
@@ -149,7 +148,7 @@ public class LoaderSubmind : Submind
         loader.ChangeState(gatherState);
         info.unitState = gatherState;
         info.state = LoaderState.GATHER;
-        Debug.Log($"{loader.gameObject.name} began to gather from {vein.gameObject.name}");
+        //Debug.Log($"{loader.gameObject.name} began to gather from {vein.gameObject.name}");
         gatherState.OnResourceGatheredEvent += OnResourceGathered;
     }
 
@@ -158,7 +157,7 @@ public class LoaderSubmind : Submind
         LoaderInfo info;
         LoaderAnt loader = unit as LoaderAnt;
         loadersState.TryGetValue(loader, out info);
-        Debug.Log($"{loader.gameObject.name} ended gathering from {info.assignedVein.gameObject.name}");
+        //Debug.Log($"{loader.gameObject.name} ended gathering from {info.assignedVein.gameObject.name}");
         (info.unitState as GatherResourceState).OnResourceGatheredEvent -= OnResourceGathered;
 
         if (info.assignedVein.CurrentCapacity == 0) OnVeinDepleted(info.assignedVein);
@@ -172,7 +171,7 @@ public class LoaderSubmind : Submind
         loader.ChangeState(moveState);
         info.unitState = moveState;
         info.state = LoaderState.MOVE_TO_ANTHILL;
-        Debug.Log($"{loader.gameObject.name} moving to anthill");
+        //Debug.Log($"{loader.gameObject.name} moving to anthill");
         moveState.OnTargetReachedEvent += OnAnthillReached;
     }
 
@@ -181,7 +180,7 @@ public class LoaderSubmind : Submind
         LoaderInfo info;
         LoaderAnt loader = unit as LoaderAnt;
         loadersState.TryGetValue(loader, out info);
-        Debug.Log($"{loader.gameObject.name} reached to anthill");
+        //Debug.Log($"{loader.gameObject.name} reached to anthill");
         (info.unitState as MoveToPositionState).OnTargetReachedEvent -= OnAnthillReached;
 
         AssignUnload(loader, info);
@@ -193,7 +192,7 @@ public class LoaderSubmind : Submind
         loader.ChangeState(unloadState);
         info.unitState = unloadState;
         info.state = LoaderState.UNLOAD;
-        Debug.Log($"{loader.gameObject.name} began to unload to anthill");
+        //Debug.Log($"{loader.gameObject.name} began to unload to anthill");
         unloadState.OnResourceUnloadedEvent += OnUnloaded;
     }
 
@@ -202,7 +201,7 @@ public class LoaderSubmind : Submind
         LoaderInfo info;
         LoaderAnt loader = unit as LoaderAnt;
         loadersState.TryGetValue(loader, out info);
-        Debug.Log($"{loader.gameObject.name} ended unloading to anthill");
+        //Debug.Log($"{loader.gameObject.name} ended unloading to anthill");
         (info.unitState as UnloadResourceState).OnResourceUnloadedEvent -= OnUnloaded;
 
         info.state = LoaderState.IDLE;
