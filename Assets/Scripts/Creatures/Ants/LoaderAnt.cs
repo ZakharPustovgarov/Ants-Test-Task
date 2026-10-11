@@ -43,12 +43,12 @@ public class LoaderAnt : Ant
         loadedResourceCount = extractable.Extract(gatheredResourceLimit);
         gatheredResource.SetActive(true);
         animController.StopActing();
-        OnResourceGathered?.Invoke();
+        OnResourceGatheredEvent?.Invoke();
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        OnObjectDetected?.Invoke(col.gameObject);
+        OnObjectDetectedEvent?.Invoke(col.gameObject);
     }
 
     protected override void OnDeath()

@@ -22,7 +22,7 @@ public class SearchResourceState : UnitState
 
         loaderAnt = ClassUtility.CastOrThrow<LoaderAnt>(unit, "SearchResourceState");
 
-        loaderAnt.OnObjectDetected += OnDetection;
+        loaderAnt.OnObjectDetectedEvent += OnDetection;
         AssignMovePosition();
         StartMovement();
     }
@@ -37,7 +37,7 @@ public class SearchResourceState : UnitState
 
     public override void Exit()
     {
-        loaderAnt.OnObjectDetected -= OnDetection;
+        loaderAnt.OnObjectDetectedEvent -= OnDetection;
         StopMovement();
     }
 
