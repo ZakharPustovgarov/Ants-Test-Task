@@ -20,10 +20,7 @@ public class SearchResourceState : UnitState
     {
         base.Enter(unit);
 
-        if (unit is LoaderAnt)
-            loaderAnt = unit as LoaderAnt;
-        else
-            throw new ArgumentException("Unit isn't LoaderAnt in SearchResourceState");
+        loaderAnt = ClassUtility.CastOrThrow<LoaderAnt>(unit, "SearchResourceState");
 
         loaderAnt.OnObjectDetected += OnDetection;
         AssignMovePosition();
