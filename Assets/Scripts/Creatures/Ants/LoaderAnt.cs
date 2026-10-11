@@ -6,7 +6,6 @@ public class LoaderAnt : Ant
 {
     [SerializeField] private GameObject gatheredResource;
     [SerializeField] private CircleCollider2D searchCollider;
-    [SerializeField] private float gatherDistance = 0.5f;
     [SerializeField] private float gatherTime = 4;
     [SerializeField] private int gatheredResourceLimit = 1;
 
