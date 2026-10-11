@@ -368,7 +368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LoaderAnt
   maxHealth: 2
   rb: {fileID: 6955707962102233082}
-  speed: 1
+  speed: 2
   _animController: {fileID: 1806012776025192700}
   deathTimer: 3
   gatheredResource: {fileID: 6951242306132875913}
