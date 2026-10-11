@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class LoaderAnt : Ant
 {
-    [SerializeField] private LoaderAnimationController animController;
     [SerializeField] private GameObject gatheredResource;
     [SerializeField] private CircleCollider2D searchCollider;
     [SerializeField] private float gatherDistance = 0.5f;
     [SerializeField] private float gatherTime = 4;
     [SerializeField] private int gatheredResourceLimit = 1;
 
-    public LoaderAnimationController AnimController { get { return animController; } }
+    private LoaderAnimationController animController => _animController as LoaderAnimationController;
     private int loadedResourceCount = 0;
     private Coroutine gatherCoroutine;
 
@@ -25,7 +24,7 @@ public class LoaderAnt : Ant
     public void Gather(IExtractable extractable)
     {
         gatherCoroutine = StartCoroutine(GatherDelay(extractable));
-        animController.BeginActing();
+        animController.StartActing();
     }
 
     public void Unload(IInsertable insertable)
@@ -48,11 +47,6 @@ public class LoaderAnt : Ant
     private void OnTriggerEnter2D(Collider2D col)
     {
         OnObjectDetected?.Invoke(col.gameObject);
-    }
-
-    protected override void StartDeathAnimation()
-    {
-        animController.Die();
     }
 
     protected override void OnDeath()

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public abstract class Ant : MovableCreature
 {
+    [SerializeField] protected AntAnimationController _animController;
     [SerializeField] private float deathTimer = 3f;
     protected UnitState currentState;
 
@@ -18,7 +19,20 @@ public abstract class Ant : MovableCreature
         currentState.Enter(this);
     }
 
-    protected abstract void StartDeathAnimation();
+    public void StartMovementAnimation()
+    {
+        _animController.StartMovement();
+    }
+
+    public void StopMovementAnimation()
+    {
+        _animController.StopMovement();
+    }
+
+    private void StartDeathAnimation()
+    {
+        _animController.Die();
+    }
 
     protected IEnumerator WaitAndDie(float delay)
     {

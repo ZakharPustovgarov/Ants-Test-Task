@@ -5,7 +5,7 @@ public class LoaderAnimationController : AntAnimationController
     private string attackTrigger = "Attack";
     private string actingBool = "IsActing";
 
-    public void BeginActing()
+    public void StartActing()
     {
         animator.SetBool(actingBool, true);
     }

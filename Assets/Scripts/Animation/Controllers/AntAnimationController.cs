@@ -8,7 +8,7 @@ public abstract class AntAnimationController : MonoBehaviour
     private string deathTrigger = "Died";
     private string damageTrigger = "TookDamage";
 
-    public void BeginMovement()
+    public void StartMovement()
     {
         animator.SetBool(movingBool, true);
     }
