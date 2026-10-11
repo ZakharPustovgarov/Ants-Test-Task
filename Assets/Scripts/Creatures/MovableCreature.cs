@@ -2,26 +2,44 @@ using UnityEngine;
 
 public abstract class MovableCreature : Creature, IMovable
 {
+    [SerializeField] private Rigidbody2D rb;
     [SerializeField] private float speed = 1;
 
-    public bool MoveTowards(Vector3 destination)
+    public bool MoveTowards(Vector3 destination, float stoppingDistance = 0)
     {
-        transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
+        Vector3 directionToTarget = destination - transform.position;
+        float currentDistance = directionToTarget.magnitude;
 
-        Vector3 direction = (destination - transform.position).normalized;
-        if (direction != Vector3.zero)
+        if(stoppingDistance == 0)
         {
-            transform.forward = direction;
+            if (currentDistance <= stoppingDistance)
+            {
+                return true;
+            }
+        }
+        else
+        {
+            float distanceSqr = (destination - transform.position).sqrMagnitude;
+
+            if (distanceSqr < 0.0001f)
+            {
+
+                transform.position = destination;
+                return true;
+            }
         }
 
-        float distanceSqr = (destination - transform.position).sqrMagnitude;
+        Vector3 moveDirection = directionToTarget.normalized;
 
-        if (distanceSqr < 0.0001f) // 0.0001f Ч это 0.01 в квадрате
+        if (moveDirection != Vector3.zero)
         {
-            
-            transform.position = destination;
-            return true; 
+            float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+            rb.MoveRotation(angle);
         }
+
+        Vector3 nextStep = transform.position + moveDirection * speed * Time.deltaTime;
+
+        rb.MovePosition(nextStep);
 
         return false;
     }

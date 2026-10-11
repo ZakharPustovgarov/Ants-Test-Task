@@ -2,5 +2,5 @@
 
 internal interface IMovable
 {
-    public bool MoveTowards(Vector3 destination);
+    public bool MoveTowards(Vector3 destination, float stoppingDistance);
 }
