@@ -5,11 +5,11 @@ public class MathUtility
 {
     public static T GetRandomElement<T>(IList<T> collection)
     {
-        return collection[GetRandomInt(0, collection.Count-1)];
+        return collection[GetRandomInt(0, collection.Count)];
     }
 
-    public static int GetRandomInt(int minInclusive, int maxInclusive)
+    public static int GetRandomInt(int minInclusive, int maxExclusive)
     {
-        return Mathf.RoundToInt(Random.Range(minInclusive, maxInclusive));
+        return Random.Range(minInclusive, maxExclusive);
     }
 }

@@ -63,6 +63,7 @@ public class LoaderSubmind : Submind
         if (foundVeins.Count == 0)
         {
             loadersState.Remove(loader);
+            return;
         }
 
         AssignMoveToGather(loader, info);
@@ -102,6 +103,7 @@ public class LoaderSubmind : Submind
         LoaderAnt loader = unit as LoaderAnt;
         loadersState.TryGetValue(loader, out info);
         Debug.Log($"{loader.gameObject.name} found {vein.gameObject.name}");
+        OnVeinFound(vein);
 
         (info.unitState as SearchResourceState).OnResourceFoundEvent -= OnResourceFound;
 
@@ -111,13 +113,13 @@ public class LoaderSubmind : Submind
     private void AssignMoveToGather(LoaderAnt loader, LoaderInfo info, ResourceVein vein = null)
     {
         ResourceVein targetVein = vein == null ? MathUtility.GetRandomElement(foundVeins) : vein;
-
+        Debug.Log($"{targetVein.gameObject.name} is chosen to gather");
         MoveToPositionState moveState = new MoveToPositionState(targetVein.gameObject.transform.position, stopDistanceForVeins);
         loader.ChangeState(moveState);
         info.unitState = moveState;
-        info.assignedVein = vein;
+        info.assignedVein = targetVein;
         info.state = LoaderState.MOVE_TO_RESOURCE;
-        Debug.Log($"{loader.gameObject.name} moving to {vein.gameObject.name} to position {vein.transform.position}");
+        Debug.Log($"{loader.gameObject.name} moving to {targetVein.gameObject.name} to position {targetVein.transform.position}");
 
         moveState.OnTargetReachedEvent += OnResourceReached;
     }
@@ -150,6 +152,8 @@ public class LoaderSubmind : Submind
         loadersState.TryGetValue(loader, out info);
         Debug.Log($"{loader.gameObject.name} ended gathering from {info.assignedVein.gameObject.name}");
         (info.unitState as GatherResourceState).OnResourceGatheredEvent -= OnResourceGathered;
+
+        if (info.assignedVein.CurrentCapacity == 0) OnVeinDepleted(info.assignedVein);
 
         AssignMoveToAnthill(loader, info);
     }

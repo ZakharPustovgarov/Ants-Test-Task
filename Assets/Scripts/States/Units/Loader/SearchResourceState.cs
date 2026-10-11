@@ -54,8 +54,8 @@ public class SearchResourceState : UnitState
 
     public Vector2 GetRandomPoint()
     {
-        Vector2 currentPos = loaderAnt.transform.position;
-        Vector2 direction = new Vector2(desirableVein.transform.position.x, desirableVein.transform.position.y) - currentPos;
+        //Vector2 currentPos = loaderAnt.transform.position;
+        Vector2 direction = new Vector2(desirableVein.transform.position.x, desirableVein.transform.position.y) - Vector2.zero;
         float distance = direction.magnitude;
 
         float randomAngle = UnityEngine.Random.Range(10, 350);
@@ -64,7 +64,8 @@ public class SearchResourceState : UnitState
 
         Vector2 rotatedDirection = rotation * direction.normalized * distance;
 
-        return currentPos + rotatedDirection;
+        //return currentPos + rotatedDirection;
+        return rotatedDirection;
     }
 
     private void StartMovement()

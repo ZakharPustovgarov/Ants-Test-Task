@@ -150,6 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LoaderSubmind
   anthillStorage: {fileID: 1684789870}
+  stopDistanceForVeins: 0.2
 --- !u!114 &106737003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -624,6 +625,63 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &2138099978
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2886309299333518394, guid: 0483ab43077ec104cb84a8f1328fd48c, type: 3}
+      propertyPath: m_Name
+      value: Mushroom0 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538525722823878642, guid: 0483ab43077ec104cb84a8f1328fd48c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538525722823878642, guid: 0483ab43077ec104cb84a8f1328fd48c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538525722823878642, guid: 0483ab43077ec104cb84a8f1328fd48c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538525722823878642, guid: 0483ab43077ec104cb84a8f1328fd48c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538525722823878642, guid: 0483ab43077ec104cb84a8f1328fd48c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538525722823878642, guid: 0483ab43077ec104cb84a8f1328fd48c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538525722823878642, guid: 0483ab43077ec104cb84a8f1328fd48c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538525722823878642, guid: 0483ab43077ec104cb84a8f1328fd48c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538525722823878642, guid: 0483ab43077ec104cb84a8f1328fd48c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538525722823878642, guid: 0483ab43077ec104cb84a8f1328fd48c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0483ab43077ec104cb84a8f1328fd48c, type: 3}
 --- !u!1001 &604125576037139792
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -634,7 +692,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2886309299333518394, guid: 0483ab43077ec104cb84a8f1328fd48c, type: 3}
       propertyPath: m_Name
-      value: Mushroom
+      value: Mushroom0
       objectReference: {fileID: 0}
     - target: {fileID: 7538525722823878642, guid: 0483ab43077ec104cb84a8f1328fd48c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -689,21 +747,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4505285369501469952, guid: 95327bd18beab264398b07450afb2b0c, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4505285369501469952, guid: 95327bd18beab264398b07450afb2b0c, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4505285369501469952, guid: 95327bd18beab264398b07450afb2b0c, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4505285369501469952, guid: 95327bd18beab264398b07450afb2b0c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 270
+    - target: {fileID: 1650213540826859242, guid: 95327bd18beab264398b07450afb2b0c, type: 3}
+      propertyPath: gatherTime
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6801833207970546055, guid: 95327bd18beab264398b07450afb2b0c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -764,4 +810,5 @@ SceneRoots:
   - {fileID: 2366193896431309635}
   - {fileID: 1684789869}
   - {fileID: 604125576037139792}
+  - {fileID: 2138099978}
   - {fileID: 106737004}
