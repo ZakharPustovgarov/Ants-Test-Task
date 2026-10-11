@@ -16,6 +16,7 @@ public class LoaderAnt : Ant
 
     public Action<GameObject> OnObjectDetectedEvent;
     public Action OnResourceGatheredEvent;
+    public Action OnResourceUnloadedEvent;
 
     protected override void Start()
     {
@@ -34,6 +35,8 @@ public class LoaderAnt : Ant
 
         if(loadedResourceCount == 0)
             gatheredResource.SetActive(false);
+
+        OnResourceUnloadedEvent?.Invoke();
     }
 
     private IEnumerator GatherDelay(IExtractable extractable)
