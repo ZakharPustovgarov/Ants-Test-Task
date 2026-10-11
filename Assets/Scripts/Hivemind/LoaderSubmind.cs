@@ -6,6 +6,7 @@ public class LoaderSubmind : Submind
 {
     [SerializeField] private AnthillStorage anthillStorage;
     [SerializeField] private float stopDistanceForVeins = 0.2f;
+    [SerializeField] private float rightVeinSearchWeight = 0.7f;
 
     private List<LoaderAnt> unauthorizedLoaders = new List<LoaderAnt>();
     private Dictionary<LoaderAnt, LoaderInfo> loadersState = new Dictionary<LoaderAnt, LoaderInfo>();
@@ -94,7 +95,7 @@ public class LoaderSubmind : Submind
 
     private void AssignSearch(LoaderAnt loader, LoaderInfo info, ResourceVein vein)
     {
-        SearchResourceState searchState = new SearchResourceState(vein);
+        SearchResourceState searchState = new SearchResourceState(vein, rightVeinSearchWeight);
         loader.ChangeState(searchState);
         info.unitState = searchState;
         info.state = LoaderState.SEARCH;
