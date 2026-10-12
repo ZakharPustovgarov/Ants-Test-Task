@@ -38,13 +38,7 @@ public class LoaderSubmind : Submind
             
             if(info == null) loadersState.Add(loader, new LoaderInfo(LoaderState.IDLE));
 
-            if(info.state != LoaderState.IDLE)
-            {
-                info.unitState.Execute();
-                continue;
-            }
-
-            PutIdleToWork(loader, info);
+            if(info.state == LoaderState.IDLE) PutIdleToWork(loader, info);        
         }
     }
 
