@@ -229,7 +229,7 @@ public class LoaderSubmind : Submind
     private void OnVeinFound(ResourceVein vein)
     {
         hiddenVeins.Remove(vein);
-        foundVeins.Add(vein);
+        if(!foundVeins.Contains(vein)) foundVeins.Add(vein);
     }
 
 
