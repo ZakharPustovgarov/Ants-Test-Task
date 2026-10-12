@@ -13,6 +13,8 @@ public class LoaderAnt : Ant
     private int loadedResourceCount = 0;
     private Coroutine gatherCoroutine;
 
+    public int GatheredResourceLimit { get { return gatheredResourceLimit; } }
+
     public Action<GameObject> OnObjectDetectedEvent;
     public Action OnResourceGatheredEvent;
     public Action OnResourceUnloadedEvent;
