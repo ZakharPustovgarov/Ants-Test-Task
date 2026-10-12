@@ -174,7 +174,7 @@ MonoBehaviour:
   resourceVeinPrefab: {fileID: 2886309299333518394, guid: 0483ab43077ec104cb84a8f1328fd48c, type: 3}
   mapCenter: {x: 0, y: 0, z: 0}
   minDIstanceFromCenter: 1.2
-  maxDIstanceFromCenter: 3
+  maxDIstanceFromCenter: 2.5
 --- !u!114 &39433494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1419,6 +1419,10 @@ PrefabInstance:
     - target: {fileID: 2886309299333518394, guid: 0483ab43077ec104cb84a8f1328fd48c, type: 3}
       propertyPath: m_Name
       value: Mushroom0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7349897902376845901, guid: 0483ab43077ec104cb84a8f1328fd48c, type: 3}
+      propertyPath: maxCapacity
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7538525722823878642, guid: 0483ab43077ec104cb84a8f1328fd48c, type: 3}
       propertyPath: m_LocalPosition.x

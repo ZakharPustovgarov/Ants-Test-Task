@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3340759943841b14dbc87663f70eeacf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourceVein
-  maxCapacity: 2
+  maxCapacity: 3
 --- !u!70 &5715903314996369173
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
