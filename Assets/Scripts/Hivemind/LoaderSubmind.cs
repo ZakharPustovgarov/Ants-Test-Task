@@ -1,3 +1,4 @@
+using SimpleEventBus;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class LoaderSubmind : Submind
     private List<LoaderAnt> unauthorizedLoaders = new List<LoaderAnt>();
     private Dictionary<LoaderAnt, LoaderInfo> loadersState = new Dictionary<LoaderAnt, LoaderInfo>();
 
-    private List<ResourceVein> hiddenVeins = new List<ResourceVein>();
+    [SerializeField] private List<ResourceVein> hiddenVeins = new List<ResourceVein>();
     private List<ResourceVein> foundVeins = new List<ResourceVein>();
     private List<ResourceVein> depletedVeins = new List<ResourceVein>();
 
@@ -22,7 +23,7 @@ public class LoaderSubmind : Submind
     public override void Initialize()
     {
         unauthorizedLoaders = FindObjectsByType<LoaderAnt>(FindObjectsSortMode.None).ToList();
-        hiddenVeins = FindObjectsByType<ResourceVein>(FindObjectsSortMode.None).ToList();
+        EventBus.Instance.Subscribe<ResourceVeinSpawned>(OnHiddenVeinSpawned);
         PutUnauthorizedToIdle();
     }
 
@@ -45,6 +46,11 @@ public class LoaderSubmind : Submind
 
             PutIdleToWork(loader, info);
         }
+    }
+
+    public override void Destroy()
+    {
+        EventBus.Instance.Unsubscribe<ResourceVeinSpawned>(OnHiddenVeinSpawned);
     }
 
     private void PutUnauthorizedToIdle()
@@ -213,6 +219,13 @@ public class LoaderSubmind : Submind
         info.assignedVein = null;
     }
 
+    private void OnHiddenVeinSpawned(ResourceVeinSpawned veinSpawned)
+    {
+        hiddenVeins.Add(veinSpawned.Vein);
+        isVeinsDepleted = false;
+        isAllIdle = false;
+    }
+
     private void OnVeinDepleted(ResourceVein vein)
     {
         foundVeins.Remove(vein);
@@ -224,6 +237,7 @@ public class LoaderSubmind : Submind
         hiddenVeins.Remove(vein);
         foundVeins.Add(vein);
     }
+
 
     private enum LoaderState
     {

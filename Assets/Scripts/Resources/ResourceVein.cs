@@ -1,9 +1,11 @@
+using SimpleEventBus;
 using UnityEngine;
 
 public class ResourceVein : ResourceStorage, IExtractable
 {
     private void Start()
     {
+        EventBus.Instance.Publish(new ResourceVeinSpawned(this));
         currentCapacity = maxCapacity;
     }
 

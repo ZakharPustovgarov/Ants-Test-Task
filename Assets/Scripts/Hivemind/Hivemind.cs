@@ -6,8 +6,14 @@ public class Hivemind : MonoBehaviour
 {
     private List<Submind> subminds = new List<Submind>();
 
-    void Start()
+    private bool isInitialized = false;
+
+    void Awake()
     {
+        if(isInitialized) return;
+
+        isInitialized = true;
+
         subminds = gameObject.GetComponents<Submind>().ToList();
 
         foreach (Submind smind in subminds)
@@ -22,6 +28,14 @@ public class Hivemind : MonoBehaviour
         foreach (Submind smind in subminds)
         {
             smind.Execute();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        foreach (Submind smind in subminds)
+        {
+            smind.Destroy();
         }
     }
 }

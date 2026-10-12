@@ -6,4 +6,6 @@ public abstract class Submind : MonoBehaviour
 
     public abstract void Execute();
 
+    public abstract void Destroy();
+
 }
