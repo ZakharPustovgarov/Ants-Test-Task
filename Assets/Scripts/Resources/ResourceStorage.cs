@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public abstract class ResourceStorage : MonoBehaviour
@@ -9,14 +8,13 @@ public abstract class ResourceStorage : MonoBehaviour
     public int MaxCapacity { get { return maxCapacity; } }
     public int CurrentCapacity { get { return currentCapacity; }  }
 
-    public Action<int, int> OnAnthillStorageCurrentCapacityChangedEvent;
 
     protected virtual int DeliverResource(int count)
     {
         if (currentCapacity + count < maxCapacity)
         {
             currentCapacity += count;
-            OnAnthillStorageCurrentCapacityChangedEvent?.Invoke(currentCapacity, maxCapacity);
+            OnCapacitryChanged();
             return count;
         }
 
@@ -29,7 +27,7 @@ public abstract class ResourceStorage : MonoBehaviour
         if (currentCapacity - count > 0)
         {
             currentCapacity -= count;
-            OnAnthillStorageCurrentCapacityChangedEvent?.Invoke(currentCapacity, maxCapacity);
+            OnCapacitryChanged();
             return count;
         }
 
@@ -41,12 +39,17 @@ public abstract class ResourceStorage : MonoBehaviour
     protected virtual void OnFull()
     {
         currentCapacity = maxCapacity;
-        OnAnthillStorageCurrentCapacityChangedEvent?.Invoke(currentCapacity, maxCapacity);
+        OnCapacitryChanged();
     }
 
     protected virtual void OnDepletion()
     {
         currentCapacity = 0;
-        OnAnthillStorageCurrentCapacityChangedEvent?.Invoke(currentCapacity, maxCapacity);
+        OnCapacitryChanged();
+    }
+
+    protected virtual void OnCapacitryChanged()
+    {
+
     }
 }

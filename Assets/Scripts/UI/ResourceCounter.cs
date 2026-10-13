@@ -1,24 +1,28 @@
+using SimpleEventBus;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ResourceCounter : MonoBehaviour
 {
     [SerializeField] private Text text;
-    [SerializeField] private AnthillStorage anthillStorage;
 
-    private void Start()
+    private bool isAwaken = false;
+
+    private void Awake()
     {
-        anthillStorage.OnAnthillStorageCurrentCapacityChangedEvent += OnAnthillStorageCurrentCapacityChanged;
-        OnAnthillStorageCurrentCapacityChanged(anthillStorage.CurrentCapacity, anthillStorage.MaxCapacity);
+        if (isAwaken) return;
+        isAwaken = true;
+        EventBus.Instance.Subscribe<AnthillStorageCapacityChanged>(OnAnthillStorageCurrentCapacityChanged);
     }
 
-    private void OnAnthillStorageCurrentCapacityChanged(int current, int max)
+    private void OnAnthillStorageCurrentCapacityChanged(AnthillStorageCapacityChanged @event)
     {
-        text.text = $"{current}/{max}";
+        text.text = $"{@event.CurrentCapacity}/{@event.MaxCapacity}";
     }
 
     private void OnDestroy()
     {
-        anthillStorage.OnAnthillStorageCurrentCapacityChangedEvent -= OnAnthillStorageCurrentCapacityChanged;
+        EventBus.Instance.Unsubscribe<AnthillStorageCapacityChanged>(OnAnthillStorageCurrentCapacityChanged);
     }
 }
+
